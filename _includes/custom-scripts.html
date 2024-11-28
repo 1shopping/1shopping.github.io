@@ -38,15 +38,10 @@
     }
 
     function createAffiliateSearchUrl(query) {
-        // 기본 검색 URL 생성
-        const searchPath = query ? 
-            '/w/wholesale-' + encodeURIComponent(query) + '.html' : 
-            '';
-            
-        // 제휴 파라미터
-        const affParams = '?aff_fcid=cb96fca29175414891a6a01ab341027a-1732792797283-02602-_oox4eHX&tt=CPS_NORMAL&aff_fsk=_oox4eHX&aff_platform=portals-promotion&sk=_oox4eHX&aff_trace_key=cb96fca29175414891a6a01ab341027a-1732792797283-02602-_oox4eHX&terminal_id=91ce7982d72142b5bccc5735f049d6d6';
+        const baseUrl = 'https://ko.aliexpress.com/w/wholesale-' + encodeURIComponent(query) + '.html?spm=a2g0o.best.search.0';
+        const affParams = '&aff_fcid=cb96fca29175414891a6a01ab341027a-1732792797283-02602-_oox4eHX&tt=CPS_NORMAL&aff_fsk=_oox4eHX&aff_platform=portals-promotion&sk=_oox4eHX&aff_trace_key=cb96fca29175414891a6a01ab341027a-1732792797283-02602-_oox4eHX';
         
-        return 'https://ko.aliexpress.com' + searchPath + affParams;
+        return baseUrl + affParams;
     }
 
     if (checkOriginRepo()) {
