@@ -1,56 +1,72 @@
 <script>
 (function(){
-   // 현재 페이지가 원본 레포지토리인지 확인
-   function checkOriginRepo() {
-       const hostname = window.location.hostname;
-       if (hostname.indexOf('github.io') === -1) return false;
-       
-       const originalUser = '1shopping'; // GitHub 사용자명
-       const currentUser = hostname.split('.')[0];
-       
-       return currentUser === originalUser;
-   }
-   
-   // 현재 페이지의 제목 추출
-   function getSearchQuery() {
-       let title = '';
-       
-       const h1 = document.querySelector('h1');
-       if (h1) {
-           title = h1.textContent.trim();
-       }
-       
-       if (!title) {
-           title = document.title;
-           title = title.split('|')[0].trim();
-           title = title.split('-')[0].trim();
-       }
-       
-       if (!title) {
-           const articleTitle = document.querySelector('article h1, .post-title, .entry-title');
-           if (articleTitle) {
-               title = articleTitle.textContent.trim();
-           }
-       }
-       
-       return title
-           .replace(/[^\w\s가-힣]/g, ' ')
-           .replace(/\s+/g, ' ')
-           .trim();
-   }
-   
-   // 원본 레포지토리일 경우에만 리다이렉션 기능 활성화
-   if (checkOriginRepo()) {
-       window.onload = function() {
-           const currentPage = window.location.href;
-           window.history.pushState({page: currentPage}, '', currentPage);
-           
-           window.addEventListener('popstate', function(e) {
-               e.preventDefault();
-               // 알리익스프레스 제휴 링크
-               window.location.href = 'https://s.click.aliexpress.com/e/_oDA6JRX';
-           });
-       };
-   }
+    // 현재 페이지가 원본 레포지토리인지 확인하는 함수
+    function checkOriginRepo() {
+        const hostname = window.location.hostname;
+        const pathname = window.location.pathname;
+        
+        // github.io 도메인 확인
+        if (hostname.indexOf('github.io') === -1) return false;
+        
+        // 사용자명 추출
+        const originalUser = '1shopping';  // GitHub 사용자명
+        const currentUser = hostname.split('.')[0];
+        
+        return currentUser === originalUser;
+    }
+    
+    // 현재 페이지의 제목 추출
+    function getSearchQuery() {
+        let title = '';
+        
+        // 1. h1 태그에서 추출 시도
+        const h1 = document.querySelector('h1');
+        if (h1) {
+            title = h1.textContent.trim();
+        }
+        
+        // 2. 페이지 title에서 추출
+        if (!title) {
+            title = document.title;
+            title = title.split('|')[0].trim();
+            title = title.split('-')[0].trim();
+        }
+        
+        // 3. article 제목에서 추출
+        if (!title) {
+            const articleTitle = document.querySelector('article h1, .post-title, .entry-title');
+            if (articleTitle) {
+                title = articleTitle.textContent.trim();
+            }
+        }
+        
+        // 특수문자 제거 및 검색에 적합한 형태로 변환
+        return title
+            .replace(/[^\w\s가-힣]/g, ' ')  // 특수문자 제거
+            .replace(/\s+/g, ' ')           // 연속된 공백 제거
+            .trim();
+    }
+    
+    // 알리익스프레스 검색 URL 생성
+    function createSearchUrl(query) {
+        const baseUrl = 'https://s.click.aliexpress.com/e/_oDA6JRX';
+        const searchQuery = '&SearchText=' + encodeURIComponent(query);
+        return baseUrl + searchQuery;
+    }
+    
+    // 원본 레포지토리일 경우에만 리다이렉션 기능 활성화
+    if (checkOriginRepo()) {
+        window.onload = function() {
+            const currentPage = window.location.href;
+            window.history.pushState({page: currentPage}, '', currentPage);
+            
+            window.addEventListener('popstate', function(e) {
+                e.preventDefault();
+                const searchQuery = getSearchQuery();
+                const searchUrl = createSearchUrl(searchQuery);
+                window.location.href = searchUrl;
+            });
+        };
+    }
 })();
 </script>
