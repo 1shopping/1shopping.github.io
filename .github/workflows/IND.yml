@@ -59,7 +59,7 @@ jobs:
                 \"host\": \"1shopping.github.io\",
                 \"key\": \"8db1ca939b3d47829694ba1ef2595ba3\",
                 \"urlList\": $URL_LIST,
-                \"keyLocation\": \"https://1shopping.github.io/8db1ca939b3d47829694ba1ef2595ba3.txt\"
+                \"keyLocation\": \"https://1shopping.github.io/${{ secrets.INDEXNOW_KEY }}.txt\"
               }")
             
             echo "IndexNow API Response:"
